@@ -1,0 +1,35 @@
+Can we define/extract spatial distribution metrics from xenograft images stained for vegf?  the output may be a hypothesis test
+
+digitized microscope slides 7 full slide / 2 control - Aperio format images: single-file pyramidal tiled TIFF, with non-standard metadata and compression
+
+crosssection of a sphere, the edges and center are different (you can randomly sample them)
+
+==> Given a randomly selected tile, can we tell from where in the tumor it came?
+
+-------------------------------------------------------------------------------
+
+Cell Location Classification in Digitized Microscope Slides
+
+
+Business Understanding
+One current segment of cancer research is studying the physical mechanics of tumors in order to create models for new treatments.  By visually inspecting digitized microscope slides of xenograft biopsies stained for VEGF (vascular endothelial growth factor), we can see that there is a difference between cells along the outside of the tumor and those on the inside of the tumor.  If we are able to quantify that difference with spatial metrics or a statistical hypothesis test, we can use it as an assumption in future work.
+
+Data Understanding
+We have a set of 7 full slide digitized microscope slides of xenograft biopsies stained for VEGF. The slides are in Aperio (.svs) format, which is single-file pyramidal tiled TIFF.  Each slide is roughly 2 gigapixels, which can opened using the Openslide (http://openslide.org/formats/aperio/) library.  Each image can be broken into tiles and labeled (using 64x64 tiles yeilds 620x830, or 500K samples per image).  
+
+Data Preparation
+There are two options for data preparation: 1) break the images into fixed size tiles, or 2) identify individual cells in the image using GIS or image processing algorithms and create fixed size images centered on each cell.  Method 2 is preferred, since method 1 is likely to split cells between tiles and often contain no cells.  In addition, each tile will need to be labeled with it's location.  Options for locations are: 1) pixel location for regression models, or 2) region identification labels, which can be interior/exterior or more granular).  Each tile may also be converted to grayscale, since the slides tend to be monochromatic.
+
+Modeling
+We will start simply by applying a random forest and gradient boosting classifier to a set of tiles labeled with two classes (interior vs exterior).  Depending on the performance, we may proceed with additional feature engineering or more complex labeling and re-evaluate.  We will also compare performance with a multi-layer perceptron, however, the neural network is not a preferred model since it does not yield interpretation on what factors differentiate a cell's spatial location.
+
+Evaluation
+The emphasis for this work is on overall accuracy of the classifier with no preference toward precision/recall.  The work is a success if we can devise a hypothesis test that shows that there is (or is not) a statistically significant difference between exterior and interior cells.
+
+Deployment
+The final product will be a trained classifier, hypothesis test, and report of key metrics or features.
+
+
+
+Resources:
+http://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/

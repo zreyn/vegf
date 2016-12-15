@@ -38,8 +38,8 @@ def create_and_save_tiles(slide_filename, tile_directory, tile_size=(64,64), lev
     dimensions = slide.dimensions
 
     # output status
-    print 'creating', (dimensions[0]/tile_size[0]) * (dimensions[1]/tile_size[1]),
-            'tiles for slide', slide_num, '...'
+    print 'creating', (dimensions[0]/tile_size[0]) * (dimensions[1]/tile_size[1]), \
+        'tiles for slide', slide_num, '...'
 
     i = 0
     for x in xrange(0, dimensions[0], tile_size[0]):

@@ -7,4 +7,9 @@ sudo pip install --upgrade pip
 sudo pip install pandas
 sudo pip install scikit-learn
 sudo apt-get install python-numpy python-scipy
-sudo pip install boto3
+sudo pip install boto
+sudo apt-get install python-openslide
+sudo pip install mahotas
+sudo pip install matplotlib
+
+mkdir .aws

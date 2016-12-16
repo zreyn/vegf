@@ -65,6 +65,7 @@ def create_and_upload_tiles(slide, slide_name, s3_bucket, tile_size=(64,64), lev
     '''
 
     dimensions = slide.dimensions # (width, height)
+    temp_tile_file = os.path.join(os.path.dirname(__file__),temp_file)
 
     print 'creating', (dimensions[0]/tile_size[0]) * (dimensions[1]/tile_size[1]), 'tiles for slide', slide_name
 
@@ -79,13 +80,13 @@ def create_and_upload_tiles(slide, slide_name, s3_bucket, tile_size=(64,64), lev
             if not is_empty(tile):
 
                 # save the file locally temporarily
-                tile.save(temp_file, "TIFF")
+                tile.save(temp_tile_file, "TIFF")
 
                 # upload to s3 (skip it if it already exists)
                 k = Key(bucket)
                 k.key = 'tiles/slide_' + slide_name + '_' + '{:06d}'.format(i) + '.tiff'
                 if not bucket.get_key(k.key):
-                    k.set_contents_from_filename(temp_file)
+                    k.set_contents_from_filename(temp_tile_file)
 
             # update the tile num
             i+=1
@@ -106,14 +107,14 @@ def main():
         if key.name.endswith('.svs'):
             slide_names.append(key.name)
 
-    temp_slide_file = '../data/temp.svs'
+    temp_slide_file = os.path.join(os.path.dirname(__file__),'../data/temp.svs')
 
     # open each slide
     for s3_key in slide_names:
 
         # save the file to a temporary local file
         k = bucket.get_key(s3_key)
-        #k.get_contents_to_filename(temp_slide_file)
+        k.get_contents_to_filename(temp_slide_file)
 
         # open it with openslide
         slide = openslide.OpenSlide(temp_slide_file)

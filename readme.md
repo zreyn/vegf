@@ -12,3 +12,11 @@ Evan's: https://github.com/coradek/CNW_Wildlife_Identification/blob/master/src/f
 * Define distance metric
 * Create distance matrix
 * Heirarchical clustering
+
+
+Install:
+* pip install tensorflow
+* python src/classify_image.py --model_dir model/imagenet
+* add environment variables:
+  AWS_ACCESS_KEY_ID - Your AWS Access Key ID
+  AWS_SECRET_ACCESS_KEY - Your AWS Secret Access Key

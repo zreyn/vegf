@@ -2,14 +2,15 @@ import openslide
 import numpy as np
 import mahotas as mh
 import matplotlib
+import os
 from PIL import Image
-
-from os import listdir
-from os.path import isfile, join
 
 # for S3 interaction
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+
+def rgb2gray_invert(rgb):
+    return 256 - np.dot(rgb[...,:3], [0.299, 0.587, 0.114]).astype('uint8')
 
 def is_empty(img):
     pix = rgb2gray_invert(np.array(img)) # convert to gray scale and invert
@@ -83,9 +84,9 @@ def create_and_upload_tiles(slide, slide_name, s3_bucket, tile_size=(64,64), lev
                 tile.save(temp_tile_file, "TIFF")
 
                 # upload to s3 (skip it if it already exists)
-                k = Key(bucket)
+                k = Key(s3_bucket)
                 k.key = 'tiles/slide_' + slide_name + '_' + '{:06d}'.format(i) + '.tiff'
-                if not bucket.get_key(k.key):
+                if not s3_bucket.get_key(k.key):
                     k.set_contents_from_filename(temp_tile_file)
 
             # update the tile num

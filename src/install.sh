@@ -11,5 +11,7 @@ sudo pip install boto
 sudo apt-get install python-openslide
 sudo pip install mahotas
 sudo pip install matplotlib
+sudo pip install tensorflow
+
 
 mkdir .aws

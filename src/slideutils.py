@@ -11,10 +11,6 @@ def show(pix):
     fig, ax = plt.subplots(figsize=(12, 12))
     ax.imshow(pix, interpolation='nearest', aspect='equal')
 
-def rgb2gray_invert(rgb):
-    return 256 - np.dot(rgb[...,:3], [0.299, 0.587, 0.114]).astype('uint8')
-
-
 '''
 ================================================================================
 Finding VEGF in images
